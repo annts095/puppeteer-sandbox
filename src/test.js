@@ -12,6 +12,7 @@ import { URL } from "url";
   const srcPage = process.env.SRC_PAGE;
   const targetPath = process.env.TARGET_PATH;
   const targetDomain = process.env.TARGET_DOMAIN;
+  const outputFileType = process.env.OUTPUT_FILE_TYPE || "html";
 
   if (srcPage === undefined) {
     console.error("SRC_PAGE is not set.");
@@ -38,20 +39,20 @@ import { URL } from "url";
   // Lighthouseを実行
   const csrResult = await lighthouse(page.url(), {
     port: new URL(browser.wsEndpoint()).port,
-    output: "html",
+    output: outputFileType,
   });
 
   // レポートをファイルに保存
-  writeFileSync("./report/csr.html", csrResult.report);
+  writeFileSync(`./report/csr.${outputFileType}`, csrResult.report);
 
   // 対象ページをサーバーサイドで描画したときのレポートを作成
   const ssrResult = await lighthouse(`${targetDomain}${targetPath}`, {
     port: new URL(browser.wsEndpoint()).port,
-    output: "html",
+    output: outputFileType,
   });
 
   // レポートをファイルに保存
-  writeFileSync("./report/ssr.html", ssrResult.report);
+  writeFileSync(`./report/ssr.${outputFileType}`, ssrResult.report);
 
   await browser.close();
   console.log("Lighthouse report is done.");
