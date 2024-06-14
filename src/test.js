@@ -7,6 +7,7 @@ import { URL } from "url";
   const browser = await puppeteer.launch({
     headless: true,
     args: ["--remote-debugging-port=9222"],
+    dumpio: true,
   });
 
   const srcPage = process.env.SRC_PAGE;
@@ -30,6 +31,12 @@ import { URL } from "url";
   }
 
   const page = await browser.newPage();
+
+  // ブラウザログを出力
+  page.on("console", (msg) => {
+    console.log("PAGE LOG:", msg.text());
+  });
+
   await page.goto(srcPage);
 
   // SPAの特定のページにナビゲート
@@ -48,6 +55,11 @@ import { URL } from "url";
   // キャッシュを削除
   const ssrPage = await browser.newPage();
   await ssrPage.setCacheEnabled(false);
+
+  // ブラウザログを出力
+  ssrPage.on("console", (msg) => {
+    console.log("PAGE LOG:", msg.text());
+  });
 
   // 対象ページをサーバーサイドで描画したときのレポートを作成
   const ssrResult = await lighthouse(`${targetDomain}${targetPath}`, {
