@@ -8,6 +8,12 @@
 npm ci
 ```
 
+環境変数の指定
+
+```
+cp env.example .env
+```
+
 ## 実行
 
 ```Sh

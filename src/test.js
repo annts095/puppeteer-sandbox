@@ -2,6 +2,9 @@ import puppeteer from "puppeteer";
 import lighthouse from "lighthouse";
 import { writeFileSync } from "fs";
 import { URL } from "url";
+import { config } from "dotenv";
+
+config();
 
 (async () => {
   const browser = await puppeteer.launch({
