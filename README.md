@@ -17,7 +17,7 @@ cp env.example .env
 ## 実行
 
 ```Sh
-SRC_PAGE="遷移元ページ" TARGET_PATH="遷移先ページのパス" TARGET_DOMAIN="遷移先ページのドメイン" OUTPUT_FILE_TYPE="html|csv|json" node ./src/test.js
+npm run lighthouse
 ```
 
 実行した結果が `/report` に配置される
