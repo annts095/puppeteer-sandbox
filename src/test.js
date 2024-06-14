@@ -45,6 +45,10 @@ import { URL } from "url";
   // レポートをファイルに保存
   writeFileSync(`./report/csr.${outputFileType}`, csrResult.report);
 
+  // キャッシュを削除
+  const ssrPage = await browser.newPage();
+  await ssrPage.setCacheEnabled(false);
+
   // 対象ページをサーバーサイドで描画したときのレポートを作成
   const ssrResult = await lighthouse(`${targetDomain}${targetPath}`, {
     port: new URL(browser.wsEndpoint()).port,
